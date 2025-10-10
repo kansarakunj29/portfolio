@@ -2,7 +2,7 @@ const INFO = {
 	main: {
 		title: "Kunj Kansara",
 		name: "Kunj Kansara",
-		email: "kansarakunj29@gmail.com",
+		email: "contactkunj@zohomailcloud.ca",
 		logo: "../logo.png",
 	},
 

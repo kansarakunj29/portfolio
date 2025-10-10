@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
 import NavBar from "../components/common/navBar";
@@ -18,19 +18,40 @@ const Contact = () => {
 
 	const currentSEO = SEO.find((item) => item.page === "contact");
 
+	const [formData, setFormData] = useState({
+		name: "",
+		email: "",
+		subject: "",
+		message: "",
+	});
+
+	const handleChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		const mailtoLink = `mailto:${INFO.main.email}?subject=${encodeURIComponent(
+			formData.subject || "New message from your website"
+		)}&body=${encodeURIComponent(
+			`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+		)}`;
+
+		window.location.href = mailtoLink;
+	};
+
 	return (
 		<React.Fragment>
 			<Helmet>
 				<title>{`Contact | ${INFO.main.title}`}</title>
 				<meta name="description" content={currentSEO.description} />
-				<meta
-					name="keywords"
-					content={currentSEO.keywords.join(", ")}
-				/>
+				<meta name="keywords" content={currentSEO.keywords.join(", ")} />
 			</Helmet>
 
 			<div className="page-content">
 				<NavBar active="contact" />
+
 				<div className="content-wrapper">
 					<div className="contact-logo-container">
 						<div className="contact-logo">
@@ -39,23 +60,69 @@ const Contact = () => {
 					</div>
 
 					<div className="contact-container">
-						<div className="title contact-title">
-							Let's Get in Touch: Ways to Connect with Me
-						</div>
+						<div className="title contact-title">Get in Touch</div>
 
 						<div className="subtitle contact-subtitle">
-							Thank you for your interest in getting in touch with
-							me. I welcome your feedback, questions, and
-							suggestions. If you have a specific question or
-							comment, please feel free to email me directly at
-							&nbsp;{" "}
+							Have a question or want to collaborate? Fill out the
+							form below or email me directly at{" "}
 							<a href={`mailto:${INFO.main.email}`}>
 								{INFO.main.email}
 							</a>
-							. I make an effort to respond to all messages within
-							24 hours, although it may take me longer during busy
-							periods.
+							.
 						</div>
+
+						<form className="contact-form" onSubmit={handleSubmit}>
+							<div className="form-group">
+								<label htmlFor="name">Name</label>
+								<input
+									type="text"
+									id="name"
+									name="name"
+									value={formData.name}
+									onChange={handleChange}
+									required
+								/>
+							</div>
+
+							<div className="form-group">
+								<label htmlFor="email">Email</label>
+								<input
+									type="email"
+									id="email"
+									name="email"
+									value={formData.email}
+									onChange={handleChange}
+									required
+								/>
+							</div>
+
+							<div className="form-group">
+								<label htmlFor="subject">Subject</label>
+								<input
+									type="text"
+									id="subject"
+									name="subject"
+									value={formData.subject}
+									onChange={handleChange}
+								/>
+							</div>
+
+							<div className="form-group">
+								<label htmlFor="message">Message</label>
+								<textarea
+									id="message"
+									name="message"
+									rows="5"
+									value={formData.message}
+									onChange={handleChange}
+									required
+								></textarea>
+							</div>
+
+							<button type="submit" className="contact-button">
+								Send Message
+							</button>
+						</form>
 					</div>
 
 					<div className="socials-container">
